@@ -1,4 +1,4 @@
-#Red Ribbon Society App
+#Red Ribbon
 
 A simple Android app built for [Bradford Universities][1] [Red Ribbon Society][2].
 
@@ -11,6 +11,6 @@ This app has been written by the following members of PiSoc (website coming soon
 * Ben Farnfield
 * Rob Norvill
 
-[1] http://www.bradford.ac.uk/external/ "Bradford Uni home page"
-[2] http://www.bradford.ac.uk/students-union/student-activities/sports-and-societies/red-ribbon.php "Red Ribbon home page"
+[1]: http://www.bradford.ac.uk/external/ "Bradford Uni home page"
+[2]: http://www.bradford.ac.uk/students-union/student-activities/sports-and-societies/red-ribbon.php "Red Ribbon home page"
 
