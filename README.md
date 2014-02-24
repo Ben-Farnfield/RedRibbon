@@ -1,8 +1,8 @@
 #Red Ribbon
 
-A simple Android app built for [Bradford Universities][1] [Red Ribbon Society][2].
+A simple Android app built for the [Bradford University][1] society [Red Ribbon][2].
 
-The app will provide society members with updates on upcoming and ongoing events.
+This app will provide society members with updates on upcoming and ongoing events.
 
 ##Authors
 
