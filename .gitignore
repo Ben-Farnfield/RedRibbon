@@ -1,2 +1,6 @@
-# Temp files #
+# Temp #
 *~
+
+# Eclipse #
+.settings/
+bin/
