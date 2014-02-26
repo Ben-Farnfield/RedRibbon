@@ -1,7 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uk.ac.bradford.pisoc.redribbon"
     android:versionCode="1"
     android:versionName="1.0" >
+    
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -12,6 +17,31 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
+        <!-- ACTIVITY -->
+        <activity 
+            android:name=".activity.RedRibbonMock">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- RECEIVER -->
+        <receiver 
+            android:name=".service.update_service.UpdateBroadcastReceiver"
+            android:exported="false" > <!-- stops external broadcasts -->
+    		<intent-filter>  
+        		<action android:name="android.intent.action.BOOT_COMPLETED" />
+        		<action android:name="user_refresh" />
+        		<action android:name="client_started" />
+				<category android:name="android.intent.category.HOME"/>
+    		</intent-filter>  
+		</receiver>
+        
+        <!-- SERVICE -->
+        <service android:name=".service.update_service.UpdateService"/>
+        
     </application>
 
 </manifest>
