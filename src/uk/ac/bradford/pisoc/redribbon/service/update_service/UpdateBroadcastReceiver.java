@@ -105,9 +105,6 @@ public class UpdateBroadcastReceiver extends BroadcastReceiver {
 	 * is passed with the Intent.
 	 */
 	private void startRefreshAlarm(Context context, String broadcastType) {
-		try {
-			Thread.sleep(60*1000);
-		} catch (InterruptedException e) {}
 		
 		if (noRefreshAlarmSet(context)) {
 			Intent i = new Intent(context, UpdateService.class);
