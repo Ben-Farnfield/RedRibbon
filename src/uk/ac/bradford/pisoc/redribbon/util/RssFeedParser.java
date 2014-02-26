@@ -15,6 +15,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import uk.ac.bradford.pisoc.redribbon.data.model.Item;
 
 /**
+ * This class handles the parsing of RSS 2.0 feeds.
  * 
  * @author 	Ben Farnfield
  */
@@ -31,10 +32,23 @@ public class RssFeedParser {
 	private SimpleDateFormat mRFC8822 = 
 			new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss z", Locale.UK);
 	
+	/**
+	 * Default constructor.
+	 */
 	public RssFeedParser() {
 		super();
 	}
 	
+	/**
+	 * Parses the provided RSS 2.0 InputStream into a collection of Item 
+	 * objects.
+	 * 
+	 * @param 	inputStream
+	 * @return
+	 * @throws 	XmlPullParserException
+	 * @throws 	IOException
+	 * @see		Item
+	 */
 	public List<Item> parse(InputStream inputStream) 
 			throws XmlPullParserException, IOException {
 
@@ -56,6 +70,10 @@ public class RssFeedParser {
 		}
 	}
 	
+	/* 
+	 * Parses channel blocks. This may be extended in future to collect
+	 * channel header data as well as items.
+	 */
 	private List<Item> parseChannel(XmlPullParser pp) 
 			throws XmlPullParserException, IOException {
 
@@ -72,6 +90,9 @@ public class RssFeedParser {
 		}
 	}
 	
+	/*
+	 * Parses item blocks.
+	 */
 	private Item parseItem(XmlPullParser pp) 
 			throws XmlPullParserException, IOException {
 
@@ -90,17 +111,9 @@ public class RssFeedParser {
 					} catch (ParseException e) {
 						item.setEventDate(null);
 					}
-				} else if (ITEM.equals(pp.getName())) {
-					throw new XmlPullParserException(TAG 
-							+ " : found <item> in place of </item>.");
 				}
 			} else if (eventType == XmlPullParser.END_TAG) {
-				if (ITEM.equals(pp.getName())) {
-					return item;
-				} else if (CHANNEL.equals(pp.getName())) {
-					throw new XmlPullParserException(TAG 
-							+ " : found </channel> in place of </item>.");
-				}
+				if (ITEM.equals(pp.getName())) return item;
 			}
 			eventType = pp.next();
 		}
