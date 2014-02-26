@@ -15,13 +15,13 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import uk.ac.bradford.pisoc.redribbon.data.model.Item;
 
 /**
- * This class handles the parsing of RSS 2.0 feeds.
+ * Handles all parsing of RSS 2.0 feeds.
  * 
  * @author 	Ben Farnfield
  */
 public class RssFeedParser {
 	
-	private static final String TAG = "RssParser";
+	//private static final String TAG = "RssParser";
 
 	private static final String CHANNEL     = "channel";
 	private static final String ITEM        = "item";
@@ -43,8 +43,8 @@ public class RssFeedParser {
 	 * Parses the provided RSS 2.0 InputStream into a collection of Item 
 	 * objects.
 	 * 
-	 * @param 	inputStream
-	 * @return
+	 * @param 	inputStream	InputStream pointing to an RSS 2.0 XML file.
+	 * @return	List&lt;Item&gt; with all items contained within the feed.
 	 * @throws 	XmlPullParserException
 	 * @throws 	IOException
 	 * @see		Item
