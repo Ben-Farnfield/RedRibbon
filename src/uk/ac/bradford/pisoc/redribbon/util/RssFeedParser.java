@@ -29,7 +29,7 @@ public class RssFeedParser {
 	private static final String DESCRIPTION = "description";
 	private static final String PUB_DATE    = "pubDate";
 	
-	private SimpleDateFormat mRFC8822 = 
+	private static final SimpleDateFormat RFC8822 = 
 			new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss z", Locale.UK);
 	
 	/**
@@ -49,7 +49,7 @@ public class RssFeedParser {
 	 * @throws 	IOException
 	 * @see		Item
 	 */
-	public List<Item> parse(InputStream inputStream) 
+	public static List<Item> parse(InputStream inputStream) 
 			throws XmlPullParserException, IOException {
 
 		try {
@@ -74,7 +74,7 @@ public class RssFeedParser {
 	 * Parses channel blocks. This may be extended in future to collect
 	 * channel header data as well as items.
 	 */
-	private List<Item> parseChannel(XmlPullParser pp) 
+	private static List<Item> parseChannel(XmlPullParser pp) 
 			throws XmlPullParserException, IOException {
 
 		List<Item> items = new ArrayList<Item>();
@@ -93,7 +93,7 @@ public class RssFeedParser {
 	/*
 	 * Parses item blocks.
 	 */
-	private Item parseItem(XmlPullParser pp) 
+	private static Item parseItem(XmlPullParser pp) 
 			throws XmlPullParserException, IOException {
 
 		Item item = new Item();
@@ -107,7 +107,7 @@ public class RssFeedParser {
 					item.setBody(pp.nextText());
 				} else if (PUB_DATE.equals(pp.getName())) {
 					try {
-						item.setEventDate(mRFC8822.parse(pp.nextText()));
+						item.setEventDate(RFC8822.parse(pp.nextText()));
 					} catch (ParseException e) {
 						item.setEventDate(null);
 					}

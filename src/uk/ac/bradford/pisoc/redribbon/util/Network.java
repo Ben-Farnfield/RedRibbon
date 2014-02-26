@@ -32,8 +32,8 @@ public class Network {
 	 * @throws 	IOException thrown if network access is not available.
 	 * @see		HttpURLConnection
 	 */
-	public HttpURLConnection getConnection(Context context, String feedUrl) 
-			throws IOException {
+	public static HttpURLConnection getConnection(
+			Context context, String feedUrl) throws IOException {
 
 		if (isNetworkAvailable(context)) {
 			URL url = new URL(feedUrl);
@@ -44,7 +44,7 @@ public class Network {
 	}
 
 	@SuppressWarnings("deprecation")
-	private boolean isNetworkAvailable(Context context) {
+	private static boolean isNetworkAvailable(Context context) {
 		
 	    ConnectivityManager cm = (ConnectivityManager) 
 	    		context.getSystemService(Context.CONNECTIVITY_SERVICE);
