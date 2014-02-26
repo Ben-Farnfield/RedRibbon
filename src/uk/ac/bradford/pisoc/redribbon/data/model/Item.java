@@ -17,12 +17,8 @@ import java.util.Date;
  * 
  * Item objects are used to pass item data between:
  * <ul>
- *     <li> 
- *         The RssFeedParser and SQLite database.
- *     </li>
- *     <li>
- *         The SQLite database and UI.
- *     </li>
+ *     <li>The RssFeedParser and SQLite database.</li>
+ *     <li>The SQLite database and UI.</li>
  * </ul>
  * 
  * @author 	Ben Farnfield
