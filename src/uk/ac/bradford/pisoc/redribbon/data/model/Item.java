@@ -6,19 +6,19 @@ import java.util.Date;
  * This class represents one item from an RSS 2.0 feed.
  * 
  * <pre>
- *     <code>
- *         &lt;item&gt;
- *             &lt;title&gt;Title&lt;/title&gt;
- *             &lt;description&gt;Body text&lt;/description&gt;
- *             &lt;pubDate&gt;Event date&lt;/pubDate&gt;
- *         &lt;/item&gt;
- *     </code>
+ * <code>
+ *     &lt;item&gt;
+ *         &lt;title&gt;Title&lt;/title&gt;
+ *         &lt;description&gt;Body text&lt;/description&gt;
+ *         &lt;pubDate&gt;Event date&lt;/pubDate&gt;
+ *     &lt;/item&gt;
+ * </code>
  * </pre>
  * 
  * Item objects are used to pass item data between:
  * <ul>
- *     <li>The RssFeedParser and SQLite database.</li>
- *     <li>The SQLite database and UI.</li>
+ * <li>The RssFeedParser and SQLite database.</li>
+ * <li>The SQLite database and UI.</li>
  * </ul>
  * 
  * @author 	Ben Farnfield
@@ -92,5 +92,14 @@ public class Item {
 	 */
 	public void setUpdateCreated(Date updateCreated) {
 		mUpdateCreated = updateCreated;
+	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Item [mTitle=" + mTitle + ", mBody=" + mBody + ", mEventDate="
+				+ mEventDate + ", mUpdateCreated=" + mUpdateCreated + "]";
 	}
 }
