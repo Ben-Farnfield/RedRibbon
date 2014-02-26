@@ -4,3 +4,4 @@
 # Eclipse #
 .settings/
 bin/
+proguard-project.txt
