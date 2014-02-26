@@ -7,15 +7,29 @@ import java.net.URL;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
+/**
+ * Handles the creation of HTTP connections.
+ * 
+ * @author 	Ben Farnfield
+ */
 public class Network {
 	
-	private static final String TAG = "FeedConnection";
+	//private static final String TAG = "FeedConnection";
 	
-	public HttpURLConnection getConnection(Context context) 
+	/**
+	 * Returns a HTTP connection to the provided RSS feed.
+	 * 
+	 * @param 	context	Context of the caller.
+	 * @param 	feedUrl	String representing the URL of the RSS feed.
+	 * @return	HttpURLConnection connected to the provided RSS feed.
+	 * @throws 	IOException thrown if network access is not available.
+	 * @see		HttpURLConnection
+	 */
+	public HttpURLConnection getConnection(Context context, String feedUrl) 
 			throws IOException {
 
 		if (isNetworkAvailable(context)) {
-			URL url = new URL("http://blog.vogella.com/comments/feed/");
+			URL url = new URL(feedUrl);
 			return (HttpURLConnection) url.openConnection();
 		} else {
 			throw new IOException("Network not available");
@@ -28,7 +42,7 @@ public class Network {
 	    ConnectivityManager cm = (ConnectivityManager) 
 	    		context.getSystemService(Context.CONNECTIVITY_SERVICE);
 	    
-	    return cm.getBackgroundDataSetting() // devices < 4.0
+	    return cm.getBackgroundDataSetting() // devices < Android 4.0
 	    		&& cm.getActiveNetworkInfo() != null;
 	}
 }
