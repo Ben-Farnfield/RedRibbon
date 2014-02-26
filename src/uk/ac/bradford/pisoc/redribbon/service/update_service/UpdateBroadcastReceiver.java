@@ -5,8 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
+ * Handles all incoming broadcasts for UpdateService:
+ * 
+ * <ul>
+ *     <li>BOOT_COMPLETED</li>
+ *     <li>CLIENT_STARTED</li>
+ *     <li>USER_REFRESH</li>
+ *     <li>ALARM_REFRESH</li>
+ * </ul>
  * 
  * @author 	Ben Farnfield
+ * @see 	UpdateService
  */
 public class UpdateBroadcastReceiver extends BroadcastReceiver {
 
@@ -21,7 +30,7 @@ public class UpdateBroadcastReceiver extends BroadcastReceiver {
 	 * this key. Broadcast types are defined as fields within 
 	 * UpdateBroadcastReceiver.
 	 * 
-	 * @see	UpdateBroadcastReceiver#CLIENT_START
+	 * @see	UpdateBroadcastReceiver#CLIENT_STARTED
 	 * @see	UpdateBroadcastReceiver#USER_REFRESH
 	 * @see	UpdateBroadcastReceiver#ALARM_REFRESH
 	 */
@@ -30,19 +39,26 @@ public class UpdateBroadcastReceiver extends BroadcastReceiver {
 	/**
 	 * Broadcast sent when a client has started.
 	 */
-	public static final String CLIENT_START = "client_start";
+	public static final String CLIENT_STARTED = "client_started";
 	
 	/**
-	 * Broadcast sent when a user requests a refresh.
+	 * Broadcast sent when a user has requested their updates be refreshed.
 	 */
 	public static final String USER_REFRESH = "user_refresh";
 	
 	/**
-	 * Broadcast sent when AlarmManager requests a refresh.
+	 * Broadcast sent when AlarmManager has requested all updates be refreshed.
 	 * 
 	 * @see	AlarmManager
 	 */
 	public static final String ALARM_REFRESH = "alarm_refresh";
+	
+	/**
+	 * Default constructor.
+	 */
+	public UpdateBroadcastReceiver() {
+		super();
+	}
 	
 	/**
 	 * 
