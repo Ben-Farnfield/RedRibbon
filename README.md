@@ -4,11 +4,11 @@ A simple Android app built for the [Bradford University][1] society [Red Ribbon]
 
 This app will provide society members with updates on upcoming and ongoing events.
 
-##Docs
+###Docs
 
-You can find the Javadoc for this project hosted by [github.io][3] or in the [doc/][4] folder.
+You can find the Javadoc for this project hosted at [github.io][3] or in the [doc/][4] folder.
 
-##Authors
+###Authors
 
 This app has been written by the following members of PiSoc (website coming soon!):
 
