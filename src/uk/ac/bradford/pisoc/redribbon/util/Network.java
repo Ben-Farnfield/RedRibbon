@@ -17,6 +17,13 @@ public class Network {
 	//private static final String TAG = "FeedConnection";
 	
 	/**
+	 * Default constructor.
+	 */
+	public Network() {
+		super();
+	}
+	
+	/**
 	 * Returns a HTTP connection to the provided RSS feed.
 	 * 
 	 * @param 	context	Context of the caller.
