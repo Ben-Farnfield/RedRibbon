@@ -2,6 +2,8 @@ package uk.ac.bradford.pisoc.redribbon.data.model;
 
 import java.util.Date;
 
+import uk.ac.bradford.pisoc.redribbon.util.NullDate;
+
 /**
  * This class represents one item from an RSS 2.0 feed.
  * 
@@ -27,10 +29,10 @@ import java.util.Date;
  */
 public class Item {
 	
-	private String mTitle;
-	private String mBody;
-	private Date mEventDate;
-	private Date mUpdateCreated;
+	private String mTitle = "";
+	private String mBody = "";
+	private Date mEventDate = new NullDate();
+	private Date mUpdateCreated = new NullDate();
 	
 	/**
 	 * Default constructor.
