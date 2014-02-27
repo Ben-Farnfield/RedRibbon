@@ -1,24 +1,20 @@
 package uk.ac.bradford.pisoc.redribbon.data.db;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import uk.ac.bradford.pisoc.redribbon.data.model.Item;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * SQLite helper class for accessing the items database.
  * 
  * <pre>
  * <code>
- * | _id           | title | body  | event_date | update_created |
- * +---------------+-------+-------+------------+----------------+
- * | INTEGER       | TEXT  | TEXT  | DATETIME   | DATETIME       |
- * | PRIMARY KEY   |       |       |            |                |
- * | AUTOINCREMENT |       |       |            |                |
+ * | _id           | title  | body  | event_date  | update_created  |
+ * +---------------+--------+-------+-------------+-----------------+
+ * | INTEGER       | TEXT   | TEXT  | INTEGER     | INTEGER         |
+ * | PRIMARY KEY   |        |       |             |                 |
+ * | AUTOINCREMENT |        |       |             |                 |
  * </code>
  * </pre>
  * 
@@ -26,14 +22,42 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class ItemDatabaseHelper extends SQLiteOpenHelper {
 	
+	private static final String TAG = "ItemDatabaseHelper";
+	
 	private static final String DB_NAME = "items.sqlite";
 	private static final int VERSION = 1;
 	
-	private static final String TABLE_ITEM = "item";
-	private static final String COLUMN_TITLE = "title";
-	private static final String COLUMN_BODY = "body";
-	private static final String COLUMN_EVENT_DATE = "event_date";
-	private static final String COLUMN_UPDATE_CREATED = "update_created";
+	/**
+	 * 
+	 */
+	public static final String TABLE_ITEM = "item";
+	/**
+	 * 
+	 */
+	public static final String COLUMN_ID = "_id";
+	/**
+	 * 
+	 */
+	public static final String COLUMN_TITLE = "title";
+	/**
+	 * 
+	 */
+	public static final String COLUMN_BODY = "body";
+	/**
+	 * 
+	 */
+	public static final String COLUMN_EVENT_DATE = "event_date";
+	/**
+	 * 
+	 */
+	public static final String COLUMN_UPDATE_CREATED = "update_created";
+	
+	private static final String DB_CREATE = "CREATE TABLE " + TABLE_ITEM + 
+			" (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+				   COLUMN_TITLE + " TEXT, " +
+				   COLUMN_BODY + " TEXT, " +
+				   COLUMN_EVENT_DATE + " INTEGER, " +
+				   COLUMN_UPDATE_CREATED + " INTEGER);";
 	
 	/**
 	 * Database name and version are passed to the SQLiteOpenHelper 
@@ -46,32 +70,25 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 		super(context, DB_NAME, null, VERSION);
 	}
 
+	/**
+	 * 
+	 * 
+	 * @see	SQLiteOpenHelper
+	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE " + TABLE_ITEM + " (" +
-				"_id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, " +
-				"body TEXT, event_date DATETIME, update_created DATETIME)");
+		db.execSQL(DB_CREATE);
 	}
 
+	/**
+	 * 
+	 * 
+	 * @see	SQLiteOpenHelper
+	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// do nothing
-	}
-	
-	public void insertItems(List<Item> items) {
-		ContentValues cv = new ContentValues();
-		for (Item item : items) {
-			cv.put(COLUMN_TITLE, item.getTitle());
-			cv.put(COLUMN_BODY, item.getBody());
-			cv.put(COLUMN_EVENT_DATE, item.getEventDate().toString());
-			cv.put(COLUMN_UPDATE_CREATED, item.getUpdateCreated().toString());
-			getWritableDatabase().insert(TABLE_ITEM, null, cv);
-		}
-	}
-	
-	public List<Item> getItems() {
-		List<Item> items = new ArrayList<Item>();
-		
-		return items;
+		Log.w(TAG, "Upgrading database ... this destroys old data.");
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM);
+	    onCreate(db);
 	}
 }
