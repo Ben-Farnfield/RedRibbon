@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -108,10 +109,15 @@ public class RssFeedParser {
 				} else if (PUB_DATE.equals(pp.getName())) {
 					try {
 						item.setEventDate(RFC8822.parse(pp.nextText()));
-					} catch (ParseException e) {}
+					} catch (ParseException e) {
+						// Do nothing: eventDate defaults to NullDate
+					}
 				}
 			} else if (eventType == XmlPullParser.END_TAG) {
-				if (ITEM.equals(pp.getName())) return item;
+				if (ITEM.equals(pp.getName())) {
+					item.setUpdateCreated(new Date());
+					return item;
+				}
 			}
 			eventType = pp.next();
 		}
