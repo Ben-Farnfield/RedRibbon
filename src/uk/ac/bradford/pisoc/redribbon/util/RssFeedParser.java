@@ -108,9 +108,7 @@ public class RssFeedParser {
 				} else if (PUB_DATE.equals(pp.getName())) {
 					try {
 						item.setEventDate(RFC8822.parse(pp.nextText()));
-					} catch (ParseException e) {
-						item.setEventDate(null);
-					}
+					} catch (ParseException e) {}
 				}
 			} else if (eventType == XmlPullParser.END_TAG) {
 				if (ITEM.equals(pp.getName())) return item;
