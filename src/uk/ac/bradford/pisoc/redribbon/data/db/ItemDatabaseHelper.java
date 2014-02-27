@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * SQLite helper class for accessing the items database.
+ * SQLite helper class for accessing and creating the items database.
  * 
  * <pre>
  * <code>

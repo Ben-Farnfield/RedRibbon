@@ -61,7 +61,7 @@ public class UpdateBroadcastReceiver extends BroadcastReceiver {
 	/**
 	 * Receives all incoming broadcasts for UpdateService.
 	 * 
-	 * Broadcasts:
+	 * \n\nBroadcasts:
 	 * <table><tr>
 	 * <td>CLIENT_STARTED</td>
 	 * <td>If no repeating alarm is currently set then a new alarm 
