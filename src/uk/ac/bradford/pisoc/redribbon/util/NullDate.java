@@ -16,9 +16,11 @@ public class NullDate extends Date {
 	public NullDate() {}
 	
 	/**
+	 * Parses a long into a Date or NullDate.
 	 * 
-	 * @param date
-	 * @return
+	 * @param 	date long representing a date.
+	 * @return	Date object unless the long passed is 0l; in this case
+	 * 			a NullDate is returned.
 	 */
 	public static Date parseDate(long date) {
 		if (date == 0l) return new NullDate();
