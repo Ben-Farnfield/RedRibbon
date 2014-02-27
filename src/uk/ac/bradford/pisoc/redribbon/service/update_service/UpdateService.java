@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import uk.ac.bradford.pisoc.redribbon.data.db.ItemDAO;
 import uk.ac.bradford.pisoc.redribbon.data.model.Item;
 import uk.ac.bradford.pisoc.redribbon.util.Network;
 import uk.ac.bradford.pisoc.redribbon.util.RssFeedParser;
@@ -38,12 +39,18 @@ public class UpdateService extends IntentService {
 		super(TAG);
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		mHandler = new Handler();
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		String broadcastType = intent.getStringExtra(
@@ -61,22 +68,28 @@ public class UpdateService extends IntentService {
 			return;
 		}
 		
-		//TODO DEBUG
-		for (Item item : items) {
-			Log.d(TAG, item.toString());
-		}
+		ItemDAO dao = new ItemDAO(this);
+		dao.open();
+		dao.insertItems(items);
+		dao.close();
 		
-		if (true) { // only send if new update received
+		if (true) { // TODO send notification if new updates received
 			sendNotification(null);
 		}
 		
 		sendRefreshCompleteBroadcast(intent, broadcastType);
 	}
 	
+	/*
+	 * 
+	 */
 	private void sendNotification(Item item) {
 		
 	}
 	
+	/*
+	 * 
+	 */
 	private void sendRefreshCompleteBroadcast(Intent intent, 
 			String broadcastType) {
 			
@@ -86,6 +99,9 @@ public class UpdateService extends IntentService {
 		}
 	}
 	
+	/*
+	 * 
+	 */
 	private void makeNetworkToast(String broadcastType) {
 		if (UpdateBroadcastReceiver.USER_REFRESH.equals(broadcastType)) {
 			mHandler.post(new Runnable() {
