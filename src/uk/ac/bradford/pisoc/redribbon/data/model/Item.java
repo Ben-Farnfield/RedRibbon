@@ -101,7 +101,7 @@ public class Item {
 	 */
 	@Override
 	public String toString() {
-		return "Item [mTitle=" + mTitle + ", mBody=" + mBody + ", mEventDate="
-				+ mEventDate + ", mUpdateCreated=" + mUpdateCreated + "]";
+		return "Title: " + mTitle + "\nBody: " + mBody + "\nEventDate: "
+				+ mEventDate + "\nUpdateCreated: " + mUpdateCreated + "\n";
 	}
 }
