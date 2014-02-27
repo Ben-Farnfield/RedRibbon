@@ -28,27 +28,27 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 	private static final int VERSION = 1;
 	
 	/**
-	 * 
+	 * Item table name.
 	 */
 	public static final String TABLE_ITEM = "item";
 	/**
-	 * 
+	 * ID column name.
 	 */
 	public static final String COLUMN_ID = "_id";
 	/**
-	 * 
+	 * Title column name.
 	 */
 	public static final String COLUMN_TITLE = "title";
 	/**
-	 * 
+	 * Body column name.
 	 */
 	public static final String COLUMN_BODY = "body";
 	/**
-	 * 
+	 * Event date column name.
 	 */
 	public static final String COLUMN_EVENT_DATE = "event_date";
 	/**
-	 * 
+	 * Update created column name.
 	 */
 	public static final String COLUMN_UPDATE_CREATED = "update_created";
 	
@@ -71,9 +71,10 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * 
+	 * Creates the database if it doesn't currently exist.
 	 * 
 	 * @see	SQLiteOpenHelper
+	 * @see	Item
 	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
@@ -81,7 +82,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 	}
 
 	/**
-	 * 
+	 * Drops and re-builds the database.
 	 * 
 	 * @see	SQLiteOpenHelper
 	 */
