@@ -13,7 +13,7 @@ import android.util.Log;
  * | _id           | title  | body  | event_date  | update_created  |
  * +---------------+--------+-------+-------------+-----------------+
  * | INTEGER       | TEXT   | TEXT  | INTEGER     | INTEGER         |
- * | PRIMARY KEY   |        |       |             |                 |
+ * | PRIMARY KEY   | UNIQUE |       |             |                 |
  * | AUTOINCREMENT |        |       |             |                 |
  * </code>
  * </pre>
@@ -54,7 +54,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper {
 	
 	private static final String DB_CREATE = "CREATE TABLE " + TABLE_ITEM + 
 			" (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-				   COLUMN_TITLE + " TEXT, " +
+				   COLUMN_TITLE + " TEXT UNIQUE, " +
 				   COLUMN_BODY + " TEXT, " +
 				   COLUMN_EVENT_DATE + " INTEGER, " +
 				   COLUMN_UPDATE_CREATED + " INTEGER);";
