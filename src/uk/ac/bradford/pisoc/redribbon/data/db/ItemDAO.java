@@ -10,10 +10,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.CursorWrapper;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class ItemDAO {
+	
+	//private static final String TAG = "ItemDAO";
 
 	private SQLiteDatabase mDB;
 	private SQLiteOpenHelper mDBHelper;
@@ -43,8 +46,12 @@ public class ItemDAO {
 	/**
 	 * 
 	 * @param items
+	 * @return
 	 */
-	public void insertItems(List<Item> items) {
+	public int insertItems(List<Item> items) {
+		
+		int maxIdBeforeInsert = getItemMaxId();
+		
 		ContentValues cv = new ContentValues();
 		for (Item item : items) {
 			cv.put(ItemDatabaseHelper.COLUMN_TITLE, item.getTitle());
@@ -53,9 +60,18 @@ public class ItemDAO {
 					item.getEventDate().getTime());
 			cv.put(ItemDatabaseHelper.COLUMN_UPDATE_CREATED, 
 					item.getUpdateCreated().getTime());
-			mDB.insert(
-					ItemDatabaseHelper.TABLE_ITEM, null, cv);
+			try {
+				mDB.insertOrThrow(
+						ItemDatabaseHelper.TABLE_ITEM, null, cv);
+			} catch (SQLException e) {
+				// Thrown if the item being inserted already exists 
+				// in the database. Do nothing as this is expected.
+			}
 		}
+		
+		int maxIdAfterInsert = getItemMaxId();
+		
+		return maxIdAfterInsert - maxIdBeforeInsert;
 	}
 	
 	/**
@@ -63,13 +79,23 @@ public class ItemDAO {
 	 * @return
 	 */
 	public List<Item> getItems() {
-		Cursor cursor = mDB.query(ItemDatabaseHelper.TABLE_ITEM, 
-				null, null, null, null, null, 
-					ItemDatabaseHelper.COLUMN_UPDATE_CREATED + " asc");
+		Cursor cursor = mDB.rawQuery("SELECT * FROM item", null);
 		ItemCursor itemCursor = new ItemCursor(cursor);
 		List<Item> items = itemCursor.getItems();
 		itemCursor.close();
 		return items;
+	}
+	
+	/*
+	 * 
+	 */
+	private int getItemMaxId() {
+		Cursor cursor = mDB.rawQuery(
+				"SELECT MAX(_id) AS maxID FROM item", null);
+		ItemCursor itemCursor = new ItemCursor(cursor);
+		int maxId = itemCursor.getId();
+		itemCursor.close();
+		return maxId;
 	}
 	
 	/*
@@ -101,6 +127,11 @@ public class ItemDAO {
 				moveToNext();
 			}
 			return items;
+		}
+		
+		public int getId() {
+			moveToFirst();
+			return getInt(getColumnIndex("maxID"));
 		}
 	}
 }
