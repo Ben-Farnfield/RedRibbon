@@ -180,18 +180,7 @@ public class ItemDAO {
 			
 			moveToFirst();
 			while (! isAfterLast()) {
-				Item item = new Item();
-				item.setTitle(getString(
-						getColumnIndex(ItemDatabaseHelper.COLUMN_TITLE)));
-				item.setBody(getString(
-						getColumnIndex(ItemDatabaseHelper.COLUMN_BODY)));
-				Date eventDate = NullDate.parseDate(getLong(
-						getColumnIndex(ItemDatabaseHelper.COLUMN_EVENT_DATE)));
-				item.setEventDate(eventDate);
-				Date updateCreated = NullDate.parseDate(getLong(getColumnIndex(
-						ItemDatabaseHelper.COLUMN_UPDATE_CREATED)));
-				item.setUpdateCreated(updateCreated);
-				items.add(item);
+				items.add(getCurrentItem());
 				moveToNext();
 			}
 			return items;
@@ -199,7 +188,10 @@ public class ItemDAO {
 		
 		public Item getItem() {
 			moveToFirst();
-			
+			return getCurrentItem();
+		}
+		
+		private Item getCurrentItem() {
 			Item item = new Item();
 			item.setTitle(getString(
 					getColumnIndex(ItemDatabaseHelper.COLUMN_TITLE)));
