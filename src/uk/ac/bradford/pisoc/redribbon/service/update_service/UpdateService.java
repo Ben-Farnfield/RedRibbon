@@ -6,13 +6,20 @@ import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+import uk.ac.bradford.pisoc.redribbon.R;
+import uk.ac.bradford.pisoc.redribbon.activity.RedRibbonMock;
 import uk.ac.bradford.pisoc.redribbon.data.db.ItemDAO;
 import uk.ac.bradford.pisoc.redribbon.data.model.Item;
 import uk.ac.bradford.pisoc.redribbon.util.Network;
 import uk.ac.bradford.pisoc.redribbon.util.RssFeedParser;
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -70,11 +77,12 @@ public class UpdateService extends IntentService {
 		
 		ItemDAO dao = new ItemDAO(this);
 		dao.open();
-		dao.insertItems(items);
+		int numNewItems = dao.insertItems(items);
 		dao.close();
 		
-		if (true) { // TODO send notification if new updates received
-			sendNotification(null);
+		if (! UpdateBroadcastReceiver.USER_REFRESH.equals(broadcastType)) {
+			if (numNewItems == 1) sendNewItemNotification();
+			else if (numNewItems > 1) sendNewItemsNotification(numNewItems);
 		}
 		
 		sendRefreshCompleteBroadcast(intent, broadcastType);
@@ -83,8 +91,50 @@ public class UpdateService extends IntentService {
 	/*
 	 * 
 	 */
-	private void sendNotification(Item item) {
+	private void sendNewItemNotification() {
+		ItemDAO dao = new ItemDAO(this);
+		dao.open();
+		Item item = dao.getLatestItem();
+		dao.close();
 		
+		PendingIntent pi = PendingIntent.getActivity(
+				this, 0, new Intent(this, RedRibbonMock.class), 0);
+		
+		Notification notification = new NotificationCompat.Builder(this)
+				.setTicker(item.getTitle())
+				.setSmallIcon(R.drawable.ic_launcher)
+				.setContentTitle(item.getTitle())
+				.setContentText(item.getBody())
+				.setContentIntent(pi)
+				.setAutoCancel(true)
+				.build();
+		
+		NotificationManager nm = (NotificationManager) 
+				getSystemService(Context.NOTIFICATION_SERVICE);
+		
+		nm.notify(0, notification);
+	}
+	
+	/*
+	 * 
+	 */
+	private void sendNewItemsNotification(int numNewItems) {
+		PendingIntent pi = PendingIntent.getActivity(
+				this, 0, new Intent(this, RedRibbonMock.class), 0);
+		
+		Notification notification = new NotificationCompat.Builder(this)
+				.setTicker(numNewItems + " new updates received!")
+				.setSmallIcon(R.drawable.ic_launcher)
+				.setContentTitle(numNewItems + " new updates received!")
+				.setContentText("")
+				.setContentIntent(pi)
+				.setAutoCancel(true)
+				.build();
+		
+		NotificationManager nm = (NotificationManager) 
+				getSystemService(Context.NOTIFICATION_SERVICE);
+		
+		nm.notify(0, notification);
 	}
 	
 	/*
@@ -108,8 +158,8 @@ public class UpdateService extends IntentService {
 				@Override
 				public void run() {
 					Toast.makeText(UpdateService.this, 
-							"Are you connected to the internet?", 
-							Toast.LENGTH_LONG).show();
+							"No network connection.", 
+								Toast.LENGTH_LONG).show();
 				}
 			});
 		}
