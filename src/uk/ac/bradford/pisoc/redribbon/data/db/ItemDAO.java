@@ -54,7 +54,6 @@ public class ItemDAO {
 	public int insertItems(List<Item> items) {
 		
 		int maxIdBeforeInsert = getItemMaxId();
-		Log.d(TAG, "maxID before: " + String.valueOf(maxIdBeforeInsert));
 		
 		ContentValues cv = new ContentValues();
 		for (Item item : items) {
@@ -70,13 +69,11 @@ public class ItemDAO {
 				Log.d(TAG, "Item key: " + String.valueOf(key));
 			} catch (SQLException e) {
 				// Thrown if the item being inserted already exists 
-				// within the database. Do nothing as this is expected 
-				// behaviour.
+				// within the database. Do nothing.
 			}
 		}
 		
 		int maxIdAfterInsert = getItemMaxId();
-		Log.d(TAG, "maxID after: " + String.valueOf(maxIdAfterInsert));
 		
 		purgeOldItems();
 

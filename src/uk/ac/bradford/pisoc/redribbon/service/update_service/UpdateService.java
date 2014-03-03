@@ -81,8 +81,15 @@ public class UpdateService extends IntentService {
 		dao.close();
 		
 		if (! UpdateBroadcastReceiver.USER_REFRESH.equals(broadcastType)) {
-			if (numNewItems == 1) sendNewItemNotification();
-			else if (numNewItems > 1) sendNewItemsNotification(numNewItems);
+			if (numNewItems == 1) {
+				dao = new ItemDAO(this);
+				dao.open();
+				Item item = dao.getLatestItem();
+				dao.close();
+				sendNotification(item.getTitle(), item.getBody());
+			} else if (numNewItems > 1) {
+				sendNotification(numNewItems + " new updates available!");
+			}
 		}
 		
 		sendRefreshCompleteBroadcast(intent, broadcastType);
@@ -91,50 +98,28 @@ public class UpdateService extends IntentService {
 	/*
 	 * 
 	 */
-	private void sendNewItemNotification() {
-		ItemDAO dao = new ItemDAO(this);
-		dao.open();
-		Item item = dao.getLatestItem();
-		dao.close();
-		
-		PendingIntent pi = PendingIntent.getActivity(
-				this, 0, new Intent(this, RedRibbonMock.class), 0);
-		
-		Notification notification = new NotificationCompat.Builder(this)
-				.setTicker(item.getTitle())
-				.setSmallIcon(R.drawable.ic_launcher)
-				.setContentTitle(item.getTitle())
-				.setContentText(item.getBody())
-				.setContentIntent(pi)
-				.setAutoCancel(true)
-				.build();
-		
-		NotificationManager nm = (NotificationManager) 
-				getSystemService(Context.NOTIFICATION_SERVICE);
-		
-		nm.notify(0, notification);
+	private void sendNotification(String title) {
+		sendNotification(title, "");
 	}
 	
 	/*
 	 * 
 	 */
-	private void sendNewItemsNotification(int numNewItems) {
+	private void sendNotification(String title, String body) {
 		PendingIntent pi = PendingIntent.getActivity(
 				this, 0, new Intent(this, RedRibbonMock.class), 0);
 		
 		Notification notification = new NotificationCompat.Builder(this)
-				.setTicker(numNewItems + " new updates received!")
-				.setSmallIcon(R.drawable.ic_launcher)
-				.setContentTitle(numNewItems + " new updates received!")
-				.setContentText("")
-				.setContentIntent(pi)
-				.setAutoCancel(true)
-				.build();
+			.setTicker(title)
+			.setSmallIcon(R.drawable.ic_launcher)
+			.setContentTitle(title)
+			.setContentText(body)
+			.setContentIntent(pi)
+			.setAutoCancel(true)
+			.build();
 		
-		NotificationManager nm = (NotificationManager) 
-				getSystemService(Context.NOTIFICATION_SERVICE);
-		
-		nm.notify(0, notification);
+		((NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE))
+			.notify(0, notification);
 	}
 	
 	/*
