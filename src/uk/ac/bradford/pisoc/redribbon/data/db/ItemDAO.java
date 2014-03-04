@@ -97,9 +97,8 @@ public class ItemDAO {
 	 * @return
 	 */
 	public Item getLatestItem() {
-		Cursor cursor = mDB.rawQuery(
-				"SELECT * FROM item WHERE _id=?", 
-					new String[] {String.valueOf(getItemMaxId())});
+		Cursor cursor = mDB.rawQuery("SELECT * FROM item WHERE _id=?", 
+				new String[] {String.valueOf(getItemMaxId())});
 		ItemCursor itemCursor = new ItemCursor(cursor);
 		Item item = itemCursor.getItem();
 		itemCursor.close();
@@ -110,9 +109,8 @@ public class ItemDAO {
 	 * 
 	 */
 	private int getItemMaxId() {
-		Cursor cursor = mDB.rawQuery(
-				"SELECT MAX(_id) AS id FROM " +
-						ItemDatabaseHelper.TABLE_ITEM, null);
+		Cursor cursor = mDB.rawQuery("SELECT MAX(_id) AS id FROM " + 
+				ItemDatabaseHelper.TABLE_ITEM, null);
 		ItemCursor itemCursor = new ItemCursor(cursor);
 		int maxId = itemCursor.getId();
 		itemCursor.close();
@@ -166,15 +164,18 @@ public class ItemDAO {
 				new String[] {String.valueOf(getItemMinId())});
 	}
 	
-	/*
+	/* Helper class which wraps a cursor object. 
 	 * 
+	 * Within the wrapper the cursors methods are exposed allowing you to 
+	 * call them without referencing the cursor object.
 	 */
 	private static class ItemCursor extends CursorWrapper {
-		
+
 		public ItemCursor(Cursor cursor) {
 			super(cursor);
 		}
 		
+		/* Returns a list of all Item objects stored within the database. */
 		public List<Item> getItems() {
 			List<Item> items = new ArrayList<Item>();
 			
@@ -186,11 +187,15 @@ public class ItemDAO {
 			return items;
 		}
 		
+		/* Returns the Item currently pointed to by the cursor. */
 		public Item getItem() {
 			moveToFirst();
 			return getCurrentItem();
 		}
 		
+		/* Helper for ItemCursor#getItem() and ItemCursor#getItems(). Builds 
+		 * and then returns the Item currently pointed to by the cursor.
+		 */
 		private Item getCurrentItem() {
 			Item item = new Item();
 			item.setTitle(getString(
@@ -206,11 +211,17 @@ public class ItemDAO {
 			return item;
 		}
 		
+		/* Helper for ItemDAO#getItemMaxId() and ItemDAO#getItemMinId(). 
+		 * Returns an int representing the MIN or MAX id.
+		 */
 		public int getId() {
 			moveToFirst();
 			return getInt(getColumnIndex("id"));
 		}
 		
+		/* Helper for ItemDAO#getTotalNumItems(). Returns an int representing 
+		 * the number of Items within the database. 
+		 */
 		public int getNumItems() {
 			moveToFirst();
 			return getInt(getColumnIndex("numItems"));
