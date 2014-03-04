@@ -105,9 +105,7 @@ public class ItemDAO {
 		return item;
 	}
 	
-	/*
-	 * 
-	 */
+	/* Returns the highest ID currently in use within the database. */
 	private int getItemMaxId() {
 		Cursor cursor = mDB.rawQuery("SELECT MAX(_id) AS id FROM " + 
 				ItemDatabaseHelper.TABLE_ITEM, null);
@@ -117,21 +115,20 @@ public class ItemDAO {
 		return maxId;
 	}
 	
-	/*
-	 * 
-	 */
+	/* Returns the lowest ID currently in use within the database. */
 	private int getItemMinId() {
-		Cursor cursor = mDB.rawQuery(
-				"SELECT MIN(_id) AS id FROM " +
-						ItemDatabaseHelper.TABLE_ITEM, null);
+		Cursor cursor = mDB.rawQuery("SELECT MIN(_id) AS id FROM " + 
+				ItemDatabaseHelper.TABLE_ITEM, null);
 		ItemCursor itemCursor = new ItemCursor(cursor);
 		int minId = itemCursor.getId();
 		itemCursor.close();
 		return minId;
 	}
 	
-	/*
+	/* Purges the oldest Items from the database.
 	 * 
+	 * When the total number of Items is greater than the MAX_NUM_ITEMS 
+	 * then the oldest Items are deleted.
 	 */
 	private void purgeOldItems() {
 		int numItemsToPurge = getTotalNumItems() - MAX_NUM_ITEMS;
@@ -144,9 +141,7 @@ public class ItemDAO {
 		}
 	}
 	
-	/*
-	 * 
-	 */
+	/* Returns the total number of Items stored within the database. */
 	private int getTotalNumItems() {
 		Cursor cursor = mDB.rawQuery("SELECT COUNT(*) AS numItems FROM " +
 				ItemDatabaseHelper.TABLE_ITEM, null);
@@ -169,7 +164,7 @@ public class ItemDAO {
 	/* Helper class which wraps a cursor object. 
 	 * 
 	 * Within the wrapper the cursors methods are exposed allowing you to 
-	 * call them without referencing the cursor object.
+	 * call them without referencing the cursor object itself.
 	 */
 	private static class ItemCursor extends CursorWrapper {
 
