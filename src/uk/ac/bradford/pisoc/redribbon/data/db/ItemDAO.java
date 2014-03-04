@@ -156,8 +156,10 @@ public class ItemDAO {
 		return numItems;
 	}
 	
-	/*
+	/* Deletes the oldest Item from the database.
 	 * 
+	 * The items age is determined using its ID. The smallest ID is 
+	 * presumed to be associated with the oldest Item.
 	 */
 	private void deleteOldestItem() {
 		mDB.delete(ItemDatabaseHelper.TABLE_ITEM, "_id=?", 
