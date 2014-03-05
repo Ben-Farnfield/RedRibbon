@@ -1,35 +1,42 @@
 package uk.ac.bradford.pisoc.redribbon.activity;
 
-import java.util.List;
-
 import uk.ac.bradford.pisoc.redribbon.R;
 import uk.ac.bradford.pisoc.redribbon.data.db.ItemDAO;
 import uk.ac.bradford.pisoc.redribbon.data.model.Item;
 import uk.ac.bradford.pisoc.redribbon.service.update_service.UpdateBroadcastReceiver;
 import uk.ac.bradford.pisoc.redribbon.service.update_service.UpdateService;
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-public class RedRibbonMock extends Activity {
+public class RedRibbonMock extends ListActivity {
 	
 	private static final String TAG = "RedRibbonMock";
 	
 	private Button mRefreshButton;
+	String[] stringList;
+	//List<Item> items;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_redribbon_mock);
 		
+		populateList();
+		
+		setListAdapter(new SimpleAdapter(this, 
+	              android.R.layout.simple_list_item_1, stringList));
+	
 		mRefreshButton = (Button)findViewById(R.id.refresh_button);
 		mRefreshButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -71,14 +78,29 @@ public class RedRibbonMock extends Activity {
 			Toast.makeText(RedRibbonMock.this, 
 					"Refresh Complete", Toast.LENGTH_SHORT).show();
 			
-			ItemDAO dao = new ItemDAO(RedRibbonMock.this);
-			dao.open();
-			List<Item> items = dao.getItems();
-			dao.close();
+			populateList();
 			
 			for (Item item : items) {
 				Log.d(TAG, item.toString());
 			}
 		}
 	};
+	
+	private void populateList() {
+		ItemDAO dao = new ItemDAO(RedRibbonMock.this);
+		dao.open();
+		Cursor items = dao.getItems();
+		dao.close();
+		
+		startManagingCursor(items);
+		
+		if (stringList == null) {
+			stringList = new String[items.size()];
+		}
+		
+		for(int i=0; i<items.size()-1; i++){
+			stringList[i] = items.get(i).toString();
+			Log.d(TAG, items.get(i).toString());
+		}
+	}
 }
