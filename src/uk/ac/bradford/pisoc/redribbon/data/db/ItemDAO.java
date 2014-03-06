@@ -84,13 +84,13 @@ public class ItemDAO {
 	 * 
 	 * @return
 	 */
-	public Cursor getItems() {
-//		Cursor cursor = mDB.rawQuery("SELECT * FROM item", null);
-//		ItemCursor itemCursor = new ItemCursor(cursor);
-//		List<Item> items = itemCursor.getItems();
-//		itemCursor.close();
-//		return items;
-		return mDB.rawQuery("SELECT * FROM item", null);
+	public List<Item> getItems() {
+		Cursor cursor = mDB.rawQuery("SELECT * FROM item", null);
+		ItemCursor itemCursor = new ItemCursor(cursor);
+		List<Item> items = itemCursor.getItems();
+		itemCursor.close();
+		return items;
+	//	return mDB.rawQuery("SELECT * FROM item", null);
 	}
 	
 	/**
