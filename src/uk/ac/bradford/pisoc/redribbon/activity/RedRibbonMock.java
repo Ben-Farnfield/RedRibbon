@@ -1,5 +1,7 @@
 package uk.ac.bradford.pisoc.redribbon.activity;
 
+import java.util.List;
+
 import uk.ac.bradford.pisoc.redribbon.R;
 import uk.ac.bradford.pisoc.redribbon.data.db.ItemDAO;
 import uk.ac.bradford.pisoc.redribbon.data.model.Item;
@@ -10,13 +12,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 public class RedRibbonMock extends ListActivity {
@@ -25,7 +26,7 @@ public class RedRibbonMock extends ListActivity {
 	
 	private Button mRefreshButton;
 	String[] stringList;
-	//List<Item> items;
+	List<Item> items;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class RedRibbonMock extends ListActivity {
 		
 		populateList();
 		
-		setListAdapter(new SimpleAdapter(this, 
+		setListAdapter(new ArrayAdapter<String>(this, 
 	              android.R.layout.simple_list_item_1, stringList));
 	
 		mRefreshButton = (Button)findViewById(R.id.refresh_button);
@@ -89,13 +90,13 @@ public class RedRibbonMock extends ListActivity {
 	private void populateList() {
 		ItemDAO dao = new ItemDAO(RedRibbonMock.this);
 		dao.open();
-		Cursor items = dao.getItems();
+		items = dao.getItems();
 		dao.close();
 		
-		startManagingCursor(items);
+		stringList = new String[items.size()];
 		
-		if (stringList == null) {
-			stringList = new String[items.size()];
+		for (Item item : items) {
+			Log.d(TAG, "Is the item null? : " + item.getTitle());
 		}
 		
 		for(int i=0; i<items.size()-1; i++){
