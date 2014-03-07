@@ -14,15 +14,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class RedRibbonMock extends ListActivity {
 	
-	private static final String TAG = "RedRibbonMock";
+//	private static final String TAG = "RedRibbonMock";
 	
 	private Button mRefreshButton;
 	List<Item> items;
@@ -32,7 +30,8 @@ public class RedRibbonMock extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_redribbon_mock);
 		
-		populateList();
+		sendBroadcast( // refresh database and populate list
+				new Intent(UpdateBroadcastReceiver.USER_REFRESH));
 	
 		mRefreshButton = (Button)findViewById(R.id.refresh_button);
 		mRefreshButton.setOnClickListener(new View.OnClickListener() {
@@ -72,14 +71,7 @@ public class RedRibbonMock extends ListActivity {
 			new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Toast.makeText(RedRibbonMock.this, 
-					"Refresh Complete", Toast.LENGTH_SHORT).show();
-			
 			populateList();
-			
-			for (Item item : items) {
-				Log.d(TAG, item.toString());
-			}
 		}
 	};
 	
@@ -92,9 +84,7 @@ public class RedRibbonMock extends ListActivity {
 		String[] stringList = new String[items.size()];
 
 		for(int i=0; i<items.size(); i++){
-			if(items.get(i) != null){
-				stringList[i] = items.get(i).toString();
-			}
+			stringList[i] = items.get(i).toString();
 		}
 		
 		setListAdapter(new ArrayAdapter<String>(this,
