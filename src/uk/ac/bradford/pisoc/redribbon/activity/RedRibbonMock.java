@@ -25,7 +25,6 @@ public class RedRibbonMock extends ListActivity {
 	private static final String TAG = "RedRibbonMock";
 	
 	private Button mRefreshButton;
-	String[] stringList;
 	List<Item> items;
 
 	@Override
@@ -34,9 +33,6 @@ public class RedRibbonMock extends ListActivity {
 		setContentView(R.layout.activity_redribbon_mock);
 		
 		populateList();
-
-		setListAdapter(new ArrayAdapter<String>(this,
-	              android.R.layout.simple_list_item_1, stringList));
 	
 		mRefreshButton = (Button)findViewById(R.id.refresh_button);
 		mRefreshButton.setOnClickListener(new View.OnClickListener() {
@@ -93,12 +89,15 @@ public class RedRibbonMock extends ListActivity {
 		items = dao.getItems();
 		dao.close();
 
-		stringList = new String[items.size()];
+		String[] stringList = new String[items.size()];
 
-		for(int i=0; i<items.size()-1; i++){
+		for(int i=0; i<items.size(); i++){
 			if(items.get(i) != null){
 				stringList[i] = items.get(i).toString();
 			}
 		}
+		
+		setListAdapter(new ArrayAdapter<String>(this,
+	              android.R.layout.simple_list_item_1, stringList));
 	}
 }
