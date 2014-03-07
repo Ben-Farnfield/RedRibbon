@@ -34,8 +34,8 @@ public class RedRibbonMock extends ListActivity {
 		setContentView(R.layout.activity_redribbon_mock);
 		
 		populateList();
-		
-		setListAdapter(new ArrayAdapter<String>(this, 
+
+		setListAdapter(new ArrayAdapter<String>(this,
 	              android.R.layout.simple_list_item_1, stringList));
 	
 		mRefreshButton = (Button)findViewById(R.id.refresh_button);
@@ -92,16 +92,13 @@ public class RedRibbonMock extends ListActivity {
 		dao.open();
 		items = dao.getItems();
 		dao.close();
-		
+
 		stringList = new String[items.size()];
-		
-		for (Item item : items) {
-			Log.d(TAG, "Is the item null? : " + item.getTitle());
-		}
-		
+
 		for(int i=0; i<items.size()-1; i++){
-			stringList[i] = items.get(i).toString();
-			Log.d(TAG, items.get(i).toString());
+			if(items.get(i) != null){
+				stringList[i] = items.get(i).toString();
+			}
 		}
 	}
 }

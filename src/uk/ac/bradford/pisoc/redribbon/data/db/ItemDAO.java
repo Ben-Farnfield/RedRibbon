@@ -90,7 +90,6 @@ public class ItemDAO {
 		List<Item> items = itemCursor.getItems();
 		itemCursor.close();
 		return items;
-//		return mDB.rawQuery("SELECT * FROM item", null);
 	}
 	
 	/**
